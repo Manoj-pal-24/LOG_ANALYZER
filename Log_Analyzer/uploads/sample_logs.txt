@@ -1,0 +1,39 @@
+192.168.1.100 - - [01/Feb/2024 10:15:30] "GET /api/users HTTP/1.1" 200 1234
+192.168.1.101 - - [01/Feb/2024 10:15:35] "POST /api/login HTTP/1.1" 401 567
+192.168.1.101 - - [01/Feb/2024 10:15:40] "POST /api/login HTTP/1.1" 401 567
+192.168.1.101 - - [01/Feb/2024 10:15:45] "POST /api/login HTTP/1.1" 401 567
+192.168.1.101 - - [01/Feb/2024 10:15:50] "POST /api/login HTTP/1.1" 401 567
+192.168.1.101 - - [01/Feb/2024 10:15:55] "POST /api/login HTTP/1.1" 401 567
+192.168.1.101 - - [01/Feb/2024 10:16:00] "POST /api/login HTTP/1.1" 401 567
+192.168.1.102 - - [01/Feb/2024 10:16:05] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.102 - - [01/Feb/2024 10:16:10] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.102 - - [01/Feb/2024 10:16:15] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.102 - - [01/Feb/2024 10:16:20] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.100 - - [01/Feb/2024 10:16:25] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.100 - - [01/Feb/2024 10:16:30] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.100 - - [01/Feb/2024 10:16:35] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.100 - - [01/Feb/2024 10:16:40] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.100 - - [01/Feb/2024 10:16:45] "GET /api/dashboard HTTP/1.1" 200 4567
+192.168.1.103 - - [01/Feb/2024 10:16:50] "GET /admin HTTP/1.1" 403 234
+192.168.1.103 - - [01/Feb/2024 10:16:55] "GET /admin HTTP/1.1" 403 234
+192.168.1.104 - - [01/Feb/2024 10:17:00] "GET / HTTP/1.1" 200 5678
+192.168.1.104 - - [01/Feb/2024 10:17:05] "GET /css/style.css HTTP/1.1" 200 2345
+192.168.1.104 - - [01/Feb/2024 10:17:10] "GET /js/app.js HTTP/1.1" 200 3456
+192.168.1.105 - - [01/Feb/2024 10:17:15] "GET /download.php HTTP/1.1" 404 0
+192.168.1.105 - - [01/Feb/2024 10:17:20] "GET /shell.php HTTP/1.1" 404 0
+192.168.1.106 - - [01/Feb/2024 10:17:25] "GET /api/users HTTP/1.1" 200 2345
+EventID=4625: Failed login from 10.0.0.50 for user administrator at 2024-02-01 10:18:00
+EventID=4625: Failed login from 10.0.0.50 for user administrator at 2024-02-01 10:18:05
+EventID=4625: Failed login from 10.0.0.50 for user administrator at 2024-02-01 10:18:10
+EventID=4624: User admin successfully logged in from 10.0.0.100 at 2024-02-01 10:18:30
+EventID=4688: New process created: powershell.exe with parameters: -enc QwBvAHAAeQAtAEkAdABlAG0A at 2024-02-01 10:19:00
+EventID=4720: User account created: NewAdminUser with admin privileges at 2024-02-01 10:19:30
+10.0.0.200 - - [01/Feb/2024 10:20:00] "GET /api/users HTTP/1.1" 200 3456
+10.0.0.200 - - [01/Feb/2024 10:20:05] "GET /api/users HTTP/1.1" 200 3456
+10.0.0.200 - - [01/Feb/2024 10:20:10] "GET /api/users HTTP/1.1" 200 3456
+10.0.0.150 - - [01/Feb/2024 10:20:15] "POST /api/data HTTP/1.1" 500 234
+10.0.0.150 - - [01/Feb/2024 10:20:20] "POST /api/data HTTP/1.1" 500 234
+10.0.0.151 - - [01/Feb/2024 10:20:25] "DELETE /api/systems HTTP/1.1" 403 100
+172.16.0.10 - - [01/Feb/2024 10:20:30] "GET / HTTP/1.1" 200 5678
+172.16.0.10 - - [01/Feb/2024 10:20:35] "GET /api/config HTTP/1.1" 200 2345
+172.16.0.10 - - [01/Feb/2024 10:20:40] "GET /api/config HTTP/1.1" 200 2345

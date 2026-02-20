@@ -1,0 +1,72 @@
+9.2s 1 There are 40000, row and 25 columns in the dataset
+9.3s 2 <class 'pandas.core.frame.DataFrame'>
+9.3s 3 RangeIndex: 40000 entries, 0 to 39999
+9.3s 4 Data columns (total 25 columns):
+9.3s 5 #   Column                  Non-Null Count  Dtype
+9.3s 6 ---  ------                  --------------  -----
+9.3s 7 0   Timestamp               40000 non-null  object
+9.3s 8 1   Source IP Address       40000 non-null  object
+9.3s 9 2   Destination IP Address  40000 non-null  object
+9.3s 10 3   Source Port             40000 non-null  int64
+9.3s 11 4   Destination Port        40000 non-null  int64
+9.3s 12 5   Protocol                40000 non-null  object
+9.3s 13 6   Packet Length           40000 non-null  int64
+9.3s 14 7   Packet Type             40000 non-null  object
+9.3s 15 8   Traffic Type            40000 non-null  object
+9.3s 16 9   Payload Data            40000 non-null  object
+9.3s 17 10  Malware Indicators      20000 non-null  object
+9.3s 18 11  Anomaly Scores          40000 non-null  float64
+9.3s 19 12  Alerts/Warnings         19933 non-null  object
+9.3s 20 13  Attack Type             40000 non-null  object
+9.3s 21 14  Attack Signature        40000 non-null  object
+9.3s 22 15  Action Taken            40000 non-null  object
+9.3s 23 16  Severity Level          40000 non-null  object
+9.3s 24 17  User Information        40000 non-null  object
+9.3s 25 18  Device Information      40000 non-null  object
+9.3s 26 19  Network Segment         40000 non-null  object
+9.3s 27 20  Geo-location Data       40000 non-null  object
+9.3s 28 21  Proxy Information       20149 non-null  object
+9.3s 29 22  Firewall Logs           20039 non-null  object
+9.3s 30 23  IDS/IPS Alerts          19950 non-null  object
+9.3s 31 24  Log Source              40000 non-null  object
+9.3s 32 dtypes: float64(1), int64(3), object(21)
+9.3s 33 memory usage: 7.6+ MB
+12.2s 34 Timestamp Source IP Address Destination IP Address  Source Port  \
+12.2s 35 0 2023-05-30 06:33:58     103.216.15.12           84.9.164.252        31225
+12.2s 36 1 2020-08-26 07:08:30    78.199.217.198         66.191.137.154        17245
+12.2s 37 2 2022-11-13 08:23:25      63.79.210.48          198.219.82.17        16811
+12.2s 38 3 2023-07-02 10:38:46     163.42.196.10        101.228.192.255        20018
+12.2s 39 4 2023-07-16 13:11:07     71.166.185.76        189.243.174.238         6131
+12.2s 40 
+12.2s 41 Destination Port Protocol  Packet Length Packet Type Traffic Type  \
+12.2s 42 0             17616     ICMP            503        Data         HTTP
+12.2s 43 1             48166     ICMP           1174        Data         HTTP
+12.2s 44 2             53600      UDP            306     Control         HTTP
+12.2s 45 3             32534      UDP            385        Data         HTTP
+12.2s 46 4             26646      TCP           1462        Data          DNS
+12.2s 47 
+12.2s 48 Payload Data  ... Log Source  Browser  \
+12.2s 49 0  Qui natus odio asperiores nam. Optio nobis ius...  ...     Server  Mozilla
+12.2s 50 1  Aperiam quos modi officiis veritatis rem. Omni...  ...   Firewall  Mozilla
+12.2s 51 2  Perferendis sapiente vitae soluta. Hic delectu...  ...   Firewall  Mozilla
+12.2s 52 3  Totam maxime beatae expedita explicabo porro l...  ...   Firewall  Mozilla
+12.2s 53 4  Odit nesciunt dolorem nisi iste iusto. Animi v...  ...   Firewall  Mozilla
+12.2s 54 
+12.2s 55 Device/OS  Year Month Day Hour Minute Second DayOfWeek
+12.2s 56 0    Windows  2023     5  30    6     33     58         1
+12.2s 57 1    Windows  2020     8  26    7      8     30         2
+12.2s 58 2    Windows  2022    11  13    8     23     25         6
+12.2s 59 3  Macintosh  2023     7   2   10     38     46         6
+12.2s 60 4    Windows  2023     7  16   13     11      7         6
+12.2s 61 
+12.2s 62 [5 rows x 33 columns]
+26.6s 63 /opt/conda/lib/python3.10/site-packages/traitlets/traitlets.py:2930: FutureWarning: --Exporter.preprocessors=["remove_papermill_header.RemovePapermillHeader"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+26.6s 64 warn(
+26.6s 65 [NbConvertApp] WARNING | Config option `kernel_spec_manager_class` not recognized by `NbConvertApp`.
+26.7s 66 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+27.5s 67 [NbConvertApp] Writing 7342928 bytes to __notebook__.ipynb
+29.4s 68 /opt/conda/lib/python3.10/site-packages/traitlets/traitlets.py:2930: FutureWarning: --Exporter.preprocessors=["nbconvert.preprocessors.ExtractOutputPreprocessor"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+29.4s 69 warn(
+29.4s 70 [NbConvertApp] WARNING | Config option `kernel_spec_manager_class` not recognized by `NbConvertApp`.
+29.4s 71 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+31.1s 72 [NbConvertApp] Writing 6437506 bytes to __results__.html

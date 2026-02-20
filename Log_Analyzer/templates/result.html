@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - AutoSOC SIEM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+            border: 1px solid rgba(255,255,255,0.48);
+            border-top-color: rgba(255,255,255,0.68);
+            border-left-color: rgba(255,255,255,0.58);
+            border-radius: 10px;
+            padding: 8px 14px;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .navbar-links a:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.32), rgba(255,255,255,0.12));
+            transform: translateY(-1px);
+        }
+
+        .navbar-links a:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.09));
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.52);
+            border-top-color: rgba(255,255,255,0.72);
+            border-left-color: rgba(255,255,255,0.6);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.34), rgba(255,255,255,0.13));
+            transform: translateY(-1px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .results-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .results-header h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .file-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .export-buttons a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .export-buttons a:hover {
+            transform: translateY(-2px);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #667eea;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .summary-link:hover .summary-card {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+        }
+
+        .summary-card.critical {
+            border-left-color: #e74c3c;
+        }
+
+        .summary-card.high {
+            border-left-color: #f39c12;
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 0.5rem;
+        }
+
+        .summary-card.critical .summary-value {
+            color: #e74c3c;
+        }
+
+        .summary-card.high .summary-value {
+            color: #f39c12;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+
+        .details-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .details-section h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .details-section h4 {
+            color: #555;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f5f7fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .severity-critical {
+            background: #ffe6e6;
+            color: #e74c3c;
+        }
+
+        .severity-high {
+            background: #fff3e0;
+            color: #f39c12;
+        }
+
+        .severity-medium {
+            background: #fffde7;
+            color: #f1c40f;
+        }
+
+        .severity-low {
+            background: #e8f5e9;
+            color: #27ae60;
+        }
+
+        .threat-item {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .threat-item.high {
+            border-left-color: #f39c12;
+        }
+
+        .threat-item.medium {
+            border-left-color: #f1c40f;
+        }
+
+        .threat-item h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .threat-item p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-summary {
+            background: #f5f7fa;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🛡️ AutoSOC SIEM</h1>
+        <div class="navbar-right">
+            <div class="navbar-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('analyze') }}">Analyze</a>
+                <a href="{{ url_for('view_incidents') }}">Incidents</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+            </div>
+            <span>Welcome, {{ session.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="results-header">
+            <h2>📊 Analysis Results</h2>
+            <div class="file-info">File: <strong>{{ filename }}</strong> | Analyzed: <strong>{{ now }}</strong></div>
+            
+            <div class="export-buttons">
+                <a href="{{ url_for('export_report', format='json') }}">📥 Export as JSON</a>
+                <a href="{{ url_for('export_report', format='csv') }}">📥 Export as CSV</a>
+                <a href="{{ url_for('analyze') }}">🔄 Analyze Another File</a>
+            </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="summary-grid">
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='total_requests') }}">
+                <div class="summary-card">
+                    <div>Total Requests</div>
+                    <div class="summary-value">{{ result.total_requests }}</div>
+                    <div class="summary-label">Log entries processed</div>
+                </div>
+            </a>
+
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='critical_incidents') }}">
+                <div class="summary-card critical">
+                    <div>Critical Incidents</div>
+                    <div class="summary-value">{{ result.summary.critical_incidents }}</div>
+                    <div class="summary-label">Immediate action</div>
+                </div>
+            </a>
+
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='high_priority_incidents') }}">
+                <div class="summary-card high">
+                    <div>High Priority</div>
+                    <div class="summary-value">{{ result.summary.high_priority_incidents }}</div>
+                    <div class="summary-label">Requires investigation</div>
+                </div>
+            </a>
+
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='unique_ips') }}">
+                <div class="summary-card">
+                    <div>Unique IPs</div>
+                    <div class="summary-value">{{ result.summary.unique_ips }}</div>
+                    <div class="summary-label">Sources detected</div>
+                </div>
+            </a>
+
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='error_rate') }}">
+                <div class="summary-card">
+                    <div>Error Rate</div>
+                    <div class="summary-value">{{ result.summary.error_rate }}</div>
+                    <div class="summary-label">HTTP errors</div>
+                </div>
+            </a>
+
+            <a class="summary-link" href="{{ url_for('analysis_block_details', block_key='invalid_logs') }}">
+                <div class="summary-card">
+                    <div>Invalid Logs</div>
+                    <div class="summary-value">{{ result.invalid_logs }}</div>
+                    <div class="summary-label">Unparseable entries</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Threat Detection Summary -->
+        {% if result.brute_force_incidents or result.suspicious_powershell_incidents or result.admin_creation_incidents %}
+        <div class="details-section">
+            <h3>🚨 Detected Threats</h3>
+            
+            {% if result.brute_force_incidents %}
+            <h4>Brute Force Attacks ({{ result.brute_force_incidents|length }})</h4>
+            {% for threat in result.brute_force_incidents %}
+            <div class="threat-item high">
+                <h4>{{ threat.type }}</h4>
+                <p><strong>Source IP:</strong> {{ threat.source_ip }}</p>
+                <p><strong>Failed Attempts:</strong> {{ threat.failed_attempts }}</p>
+                <p>{{ threat.description }}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% if result.suspicious_powershell_incidents %}
+            <h4>Suspicious PowerShell Execution ({{ result.suspicious_powershell_incidents|length }})</h4>
+            {% for threat in result.suspicious_powershell_incidents %}
+            <div class="threat-item">
+                <h4>{{ threat.type }}</h4>
+                <p><strong>Source IP:</strong> {{ threat.source_ip }}</p>
+                <p><strong>Pattern:</strong> {{ threat.pattern_matched }}</p>
+                <p>{{ threat.description }}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% if result.admin_creation_incidents %}
+            <h4>Admin Account Creation ({{ result.admin_creation_incidents|length }})</h4>
+            {% for threat in result.admin_creation_incidents %}
+            <div class="threat-item">
+                <h4>{{ threat.type }}</h4>
+                <p><strong>Source IP:</strong> {{ threat.source_ip }}</p>
+                <p>{{ threat.description }}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% if result.ioc_detections %}
+            <h4>IOC Detections ({{ result.ioc_detections|length }})</h4>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Threat Level</th>
+                        <th>Request Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ioc in result.ioc_detections %}
+                    <tr>
+                        <td>{{ ioc.ip }}</td>
+                        <td><span class="severity-badge severity-{{ ioc.threat_level.lower() }}">{{ ioc.threat_level }}</span></td>
+                        <td>{{ ioc.request_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Top IPs -->
+        {% if result.top_ips %}
+        <div class="details-section">
+            <h3>🔝 Top Source IPs</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Request Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ip, count in result.top_ips %}
+                    <tr>
+                        <td>{{ ip }}</td>
+                        <td>{{ count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- Top URLs -->
+        {% if result.top_urls %}
+        <div class="details-section">
+            <h3>🔝 Top Requested URLs</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Request Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url, count in result.top_urls %}
+                    <tr>
+                        <td>{{ url }}</td>
+                        <td>{{ count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- Error Codes -->
+        {% if result.error_counts %}
+        <div class="details-section">
+            <h3>⚠️ HTTP Status Code Distribution</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Status Code</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for status, count in result.error_counts.items() %}
+                    <tr>
+                        <td>{{ status }}</td>
+                        <td>{{ count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- Report Summary -->
+        <div class="details-section">
+            <h3>📋 Full Report Summary</h3>
+            <div class="report-summary">{{ report_summary }}</div>
+        </div>
+    </div>
+</body>
+</html>

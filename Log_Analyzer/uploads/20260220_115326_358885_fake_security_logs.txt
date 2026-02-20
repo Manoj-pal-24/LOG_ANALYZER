@@ -1,0 +1,54 @@
+================ SYSTEM LOGS ================
+2026-02-17 08:11:03 INFO System boot completed successfully
+2026-02-17 08:11:05 INFO Kernel initialized
+2026-02-17 08:11:06 WARNING CPU temperature slightly high (78C)
+2026-02-17 08:11:10 INFO Network interface eth0 connected - IP: 192.168.1.14
+2026-02-17 08:12:44 ERROR Disk read failure at sector 553920
+2026-02-17 08:13:02 INFO Scheduled maintenance task started
+2026-02-17 08:13:05 INFO Temporary files cleaned
+
+================ AUTHENTICATION LOGS ================
+2026-02-17 09:02:11 INFO User login successful: username=admin IP=192.168.1.20
+2026-02-17 09:05:13 WARNING Failed login attempt: username=root IP=185.244.25.91
+2026-02-17 09:05:18 WARNING Failed login attempt: username=root IP=185.244.25.91
+2026-02-17 09:05:20 WARNING Failed login attempt: username=root IP=185.244.25.91
+2026-02-17 09:05:24 CRITICAL Possible brute force attack detected from IP=185.244.25.91
+2026-02-17 09:06:01 INFO User logout: username=admin
+
+================ APPLICATION LOGS ================
+2026-02-17 10:15:22 INFO Web server started on port 8080
+2026-02-17 10:16:02 INFO Client connected: 192.168.1.33
+2026-02-17 10:16:07 ERROR Database connection failed (timeout)
+2026-02-17 10:16:09 WARNING Retrying database connection
+2026-02-17 10:16:15 INFO Database connection established
+2026-02-17 10:20:11 ERROR NullPointerException in module payment_gateway
+2026-02-17 10:22:01 INFO User requested /login page
+2026-02-17 10:22:04 INFO User authentication successful: user=john
+
+================ NETWORK / FIREWALL LOGS ================
+2026-02-17 11:02:13 INFO Incoming connection allowed from 192.168.1.45 port 443
+2026-02-17 11:05:42 WARNING Suspicious port scanning detected from 203.122.45.12
+2026-02-17 11:05:45 WARNING Port scan attempt: ports 21,22,23,25,80,443
+2026-02-17 11:05:50 ERROR Unauthorized access attempt blocked IP=203.122.45.12
+2026-02-17 11:06:02 CRITICAL Multiple intrusion attempts detected
+2026-02-17 11:06:05 ALERT Firewall rule automatically activated
+
+================ MALWARE ACTIVITY LOGS ================
+2026-02-17 12:00:13 WARNING Suspicious executable detected: C:\Users\Public\svchost.exe
+2026-02-17 12:00:14 INFO File hash: MD5=8f14e45fceea167a5a36dedd4bea2543
+2026-02-17 12:00:18 CRITICAL Registry persistence added: HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+2026-02-17 12:00:25 ALERT Encoded PowerShell command executed
+2026-02-17 12:00:29 ERROR Unauthorized outbound connection to 45.77.12.90:4444
+2026-02-17 12:00:35 DANGEROUS Ransomware activity detected - file encryption started
+2026-02-17 12:00:40 DANGEROUS Files modified: *.docx -> *.locked
+2026-02-17 12:00:45 CRITICAL Shadow copies deleted using vssadmin
+2026-02-17 12:00:50 ALERT Data exfiltration attempt via HTTPS to suspicious domain
+2026-02-17 12:01:05 INFO Malware quarantined by antivirus engine
+
+================ FORENSIC EVENTS ================
+2026-02-17 12:15:11 INFO Forensic acquisition started by investigator
+2026-02-17 12:16:02 INFO Disk image created: evidence_disk.E01
+2026-02-17 12:18:45 WARNING Suspicious browser history entry: darkwebmarket.onion
+2026-02-17 12:20:30 ERROR Deleted log entries detected (possible anti-forensic activity)
+2026-02-17 12:22:10 CRITICAL Evidence tampering attempt detected
+2026-02-17 12:25:00 INFO Case evidence secured successfully

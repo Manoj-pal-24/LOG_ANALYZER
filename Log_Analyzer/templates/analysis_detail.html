@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ block_data.title }} Details - AutoSOC SIEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+            border: 1px solid rgba(255,255,255,0.48);
+            border-top-color: rgba(255,255,255,0.68);
+            border-left-color: rgba(255,255,255,0.58);
+            border-radius: 10px;
+            padding: 8px 14px;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .navbar-links a:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.32), rgba(255,255,255,0.12));
+            transform: translateY(-1px);
+        }
+
+        .navbar-links a:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.09));
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.52);
+            border-top-color: rgba(255,255,255,0.72);
+            border-left-color: rgba(255,255,255,0.6);
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.34), rgba(255,255,255,0.13));
+            transform: translateY(-1px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header h2 {
+            color: #667eea;
+            margin-bottom: 0.8rem;
+        }
+
+        .meta-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .count-badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.25rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .details-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .data-table th {
+            background: #f5f7fa;
+            padding: 0.9rem;
+            text-align: left;
+            color: #666;
+            border-bottom: 2px solid #ddd;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 0.8rem 0.9rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            word-break: break-word;
+        }
+
+        .empty-state {
+            color: #777;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🛡️ AutoSOC SIEM</h1>
+        <div class="navbar-right">
+            <div class="navbar-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('analyze') }}">Analyze</a>
+                <a href="{{ url_for('view_incidents') }}">Incidents</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+            </div>
+            <span>Welcome, {{ session.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ block_data.title }} - Detailed View</h2>
+            <div class="meta-info">File: <strong>{{ filename }}</strong> | Analyzed: <strong>{{ analyzed_at }}</strong></div>
+            <p>{{ block_data.description }}</p>
+            <div class="count-badge">Count: {{ block_data.count }}</div>
+
+            <div class="action-buttons">
+                <a class="action-btn" href="{{ url_for('export_analysis_block', block_key=block_key, format='json') }}">📥 Download JSON</a>
+                <a class="action-btn" href="{{ url_for('export_analysis_block', block_key=block_key, format='csv') }}">📥 Download CSV</a>
+                <a class="action-btn" href="{{ url_for('analyze') }}">🔙 Back to Analyze</a>
+            </div>
+        </div>
+
+        <div class="details-section">
+            {% if block_data.records %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        {% for column in block_data.columns %}
+                        <th>{{ column.replace('_', ' ').title() }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in block_data.records %}
+                    <tr>
+                        {% for column in block_data.columns %}
+                        <td>{{ row.get(column, '') }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">No detailed records found for this block in the latest analysis.</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

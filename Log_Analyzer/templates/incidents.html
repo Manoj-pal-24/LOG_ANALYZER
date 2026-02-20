@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidents - AutoSOC SIEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+            border: 1px solid rgba(255,255,255,0.48);
+            border-top-color: rgba(255,255,255,0.68);
+            border-left-color: rgba(255,255,255,0.58);
+            border-radius: 10px;
+            padding: 8px 14px;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .navbar-links a:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.32), rgba(255,255,255,0.12));
+            transform: translateY(-1px);
+        }
+
+        .navbar-links a:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.09));
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.52);
+            border-top-color: rgba(255,255,255,0.72);
+            border-left-color: rgba(255,255,255,0.6);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(31, 27, 78, 0.28), 0 3px 0 rgba(31, 27, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.38);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.34), rgba(255,255,255,0.13));
+            transform: translateY(-1px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(31, 27, 78, 0.55);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .incidents-table {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f5f7fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .severity-critical {
+            background: #ffe6e6;
+            color: #e74c3c;
+        }
+
+        .severity-high {
+            background: #fff3e0;
+            color: #f39c12;
+        }
+
+        .severity-medium {
+            background: #fffde7;
+            color: #f1c40f;
+        }
+
+        .severity-low {
+            background: #e8f5e9;
+            color: #27ae60;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-open {
+            background: #e8f4f8;
+            color: #0288d1;
+        }
+
+        .status-closed {
+            background: #e8f5e9;
+            color: #27ae60;
+        }
+
+        .action-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 14px;
+        }
+
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🛡️ AutoSOC SIEM</h1>
+        <div class="navbar-right">
+            <div class="navbar-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('analyze') }}">Analyze</a>
+                <a href="{{ url_for('view_incidents') }}">Incidents</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+            </div>
+            <span>Welcome, {{ session.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>🚨 Security Incidents</h2>
+            <p>Manage and investigate all detected security incidents</p>
+        </div>
+
+        <div class="incidents-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Incident ID</th>
+                        <th>Type</th>
+                        <th>Source IP</th>
+                        <th>User</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Timestamp</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for incident in incidents %}
+                    <tr>
+                        <td>#{{ incident.incident_id }}</td>
+                        <td>{{ incident.event_type }}</td>
+                        <td>{{ incident.source_ip if incident.source_ip else 'N/A' }}</td>
+                        <td>{{ incident.username if incident.username else 'N/A' }}</td>
+                        <td>
+                            <span class="severity-badge severity-{{ incident.severity.lower() }}">
+                                {{ incident.severity }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ incident.status }}">
+                                {{ incident.status | upper }}
+                            </span>
+                        </td>
+                        <td>{{ incident.timestamp }}</td>
+                        <td class="action-links">
+                            <a href="{{ url_for('incident_details', incident_id=incident.incident_id) }}">View Details</a>
+                        </td>
+                    </tr>
+                    {% if loop.length == 0 %}
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: #999;">No incidents found</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
